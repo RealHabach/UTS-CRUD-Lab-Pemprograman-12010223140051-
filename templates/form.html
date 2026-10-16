@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ "Tambah" if mode == "tambah" else "Ubah" }} mahasiswa · Data Mahasiswa{% endblock %}
+
+{% block content %}
+<a class="back" href="{{ url_for('index') }}">← Kembali ke daftar</a>
+
+{% if mode == "tambah" %}
+  <h1>Tambah <em>mahasiswa</em></h1>
+{% else %}
+  <h1>Ubah data <em>mahasiswa</em></h1>
+{% endif %}
+<p class="lead">Semua kolom wajib diisi. IPK memakai rentang 0.00 sampai 4.00.</p>
+
+{% if errors %}
+  <div class="accent errors" role="alert">
+    <p><strong>Data belum bisa disimpan:</strong></p>
+    <ul>
+      {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{# novalidate: biar pengecekan dilakukan server (app.py), pesan error-nya tampil di atas #}
+<form class="artifact form-data" method="post" novalidate>
+  <label>NIM
+    <input name="nim" inputmode="numeric" autocomplete="off" value="{{ form.get('nim', '') }}">
+  </label>
+  <label>Nama lengkap
+    <input name="nama" autocomplete="off" value="{{ form.get('nama', '') }}">
+  </label>
+  <label>Program studi
+    <input name="program_studi" value="{{ form.get('program_studi', '') }}">
+  </label>
+  <div class="dua">
+    <label>Angkatan
+      <input name="angkatan" inputmode="numeric" placeholder="2024" value="{{ form.get('angkatan', '') }}">
+    </label>
+    <label>IPK
+      <input name="ipk" inputmode="decimal" placeholder="3.50" value="{{ form.get('ipk', '') }}">
+    </label>
+  </div>
+  <div class="actions">
+    <button class="btn btn-fill" type="submit">Simpan data</button>
+    <a class="btn btn-ghost" href="{{ url_for('index') }}">Batal</a>
+  </div>
+</form>
+{% endblock %}

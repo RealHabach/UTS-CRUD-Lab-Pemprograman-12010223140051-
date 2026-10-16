@@ -6,6 +6,7 @@
     <h1>Daftar <em>mahasiswa</em></h1>
     <p class="lead">{{ mahasiswa|length }} mahasiswa tercatat.</p>
   </div>
+  <a class="btn btn-fill" href="{{ url_for('tambah') }}">Tambah mahasiswa</a>
 </section>
 
 {% if mahasiswa %}
@@ -42,7 +43,8 @@
 {% else %}
   <div class="empty">
     <h2>Belum ada data</h2>
-    <p>Tabel mahasiswa masih kosong.</p>
+    <p>Tabel mahasiswa masih kosong. Tambahkan mahasiswa pertama untuk mulai mengisi daftar ini.</p>
+    <a class="btn btn-fill" href="{{ url_for('tambah') }}">Tambah mahasiswa pertama</a>
   </div>
 {% endif %}
 {% endblock %}
