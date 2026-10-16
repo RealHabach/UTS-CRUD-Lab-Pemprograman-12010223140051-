@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <h1>Daftar <em>mahasiswa</em></h1>
+    <p class="lead">{{ mahasiswa|length }} mahasiswa tercatat.</p>
+  </div>
+</section>
+
+{% if mahasiswa %}
+  <p class="accent">
+    Rata-rata IPK <strong>{{ "%.2f"|format(rata_ipk) }}</strong> dari {{ mahasiswa|length }} mahasiswa
+  </p>
+
+  <div class="artifact">
+    <table>
+      <thead>
+        <tr>
+          <th>NIM</th>
+          <th>Nama</th>
+          <th>Program studi</th>
+          <th>Angkatan</th>
+          <th>IPK</th>
+          <th>Lama studi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in mahasiswa %}
+        <tr>
+          <td data-label="NIM">{{ m.nim }}</td>
+          <td data-label="Nama" class="nama">{{ m.nama }}</td>
+          <td data-label="Program studi">{{ m.program_studi }}</td>
+          <td data-label="Angkatan">{{ m.angkatan }}</td>
+          <td data-label="IPK">{{ "%.2f"|format(m.ipk) }}</td>
+          <td data-label="Lama studi">{{ m.lama_studi }} tahun</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="empty">
+    <h2>Belum ada data</h2>
+    <p>Tabel mahasiswa masih kosong.</p>
+  </div>
+{% endif %}
+{% endblock %}

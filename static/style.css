@@ -1,0 +1,222 @@
+/* Gaya mengikuti DESIGN.md: serif di kertas putih, satu aksen peach, tombol bentuk pil. */
+:root {
+  --ink: #17191c;      /* teks utama dan tombol */
+  --paper: #ffffff;    /* latar halaman */
+  --mist: #f2f2f3;     /* kartu biasa */
+  --fog: #fafafb;      /* isi input, hover baris */
+  --muted: #62666f;    /* teks pendukung (lebih gelap dari #777b86 supaya lolos kontras WCAG AA) */
+  --line: #ececec;     /* garis tipis */
+  --peach: #fbe1d1;    /* aksen, maksimal satu per halaman */
+  --sienna: #5d2a1a;   /* teks di atas peach */
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.5 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap, .topbar {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.topbar { padding-top: 24px; padding-bottom: 8px; }
+
+.brand {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+h1, h2 { font-family: var(--serif); font-weight: 400; }
+
+h1 {
+  font-size: clamp(40px, 7vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+
+.lead { color: var(--muted); font-size: 18px; margin: 0 0 32px; max-width: 52ch; }
+
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Tombol */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 1px solid var(--ink);
+  border-radius: 9999px;
+  font: 450 16px/1 var(--sans);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .15s;
+}
+.btn-fill { background: var(--ink); color: var(--paper); }
+.btn-fill:hover { background: #33363c; }
+.btn-ghost { background: transparent; color: var(--ink); }
+.btn-ghost:hover { background: var(--mist); }
+.btn:disabled { opacity: .6; cursor: progress; }
+
+.link {
+  display: inline-block;
+  padding: 10px 8px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.link:hover, .back:hover, td.nama a:hover { text-decoration: underline; }
+
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.actions form { margin: 0; }
+
+/* Kartu */
+.artifact {
+  background: var(--paper);
+  border-radius: 20px;
+  /* Satu-satunya yang berbayangan: permukaan data utama. */
+  box-shadow: 0 0 0 1px rgba(4, 23, 43, .05), 0 20px 25px -5px rgba(0, 0, 0, .1), 0 8px 10px -6px rgba(0, 0, 0, .1);
+}
+
+.accent {
+  background: var(--peach);
+  color: var(--sienna);
+  border-radius: 24px;
+  padding: 18px 24px;
+  margin: 0 0 24px;
+}
+.accent strong { font-weight: 600; }
+.errors { max-width: 640px; }
+.errors p { margin: 0 0 6px; }
+.errors ul { margin: 0; padding-left: 20px; }
+
+.flash {
+  background: var(--mist);
+  border-radius: 16px;
+  padding: 14px 20px;
+  margin: 24px 0 0;
+}
+
+.empty {
+  background: var(--mist);
+  border-radius: 24px;
+  padding: 48px 32px;
+}
+.empty h2 { font-size: 34px; margin: 0 0 8px; letter-spacing: -0.01em; }
+.empty p { color: var(--muted); margin: 0 0 24px; max-width: 48ch; }
+
+/* Halaman daftar */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 56px 0 8px;
+}
+.hero .lead { margin-bottom: 24px; }
+.hero .btn { margin-bottom: 24px; }
+
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 450;
+  color: var(--muted);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+}
+td {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--fog); }
+td.nama a { color: var(--ink); font-weight: 500; text-decoration: none; }
+td.aksi { text-align: right; white-space: nowrap; }
+td.aksi form { display: inline; }
+
+/* Form */
+.back {
+  display: inline-block;
+  padding: 12px 0;
+  margin: 32px 0 16px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.form-data {
+  display: grid;
+  gap: 20px;
+  max-width: 640px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+label { display: grid; gap: 8px; font-size: 15px; font-weight: 450; }
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--fog);
+  color: var(--ink);
+  font: 400 16px/1.2 var(--sans);
+}
+input::placeholder { color: #8a8d96; }
+input:focus-visible { border-color: var(--ink); background: var(--paper); outline-offset: 1px; }
+.dua { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* Detail */
+.tag { color: var(--muted); font-size: 15px; margin: 0 0 4px; font-variant-numeric: tabular-nums; }
+.detail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 760px;
+  padding: 8px;
+  margin: 24px 0;
+}
+.detail div { padding: 16px 20px; }
+.detail dt { font-size: 14px; color: var(--muted); }
+.detail dd { margin: 4px 0 0; font-size: 22px; overflow-wrap: anywhere; }
+.detail + .accent { max-width: 760px; }
+
+.foot { color: var(--muted); font-size: 14px; padding-top: 72px; padding-bottom: 40px; }
+
+/* Layar HP: tabel berubah jadi tumpukan kartu */
+@media (max-width: 760px) {
+  .hero { padding-top: 32px; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table, tbody, tr, td { display: block; }
+  tr { padding: 14px 20px; border-bottom: 1px solid var(--line); }
+  tbody tr:last-child { border-bottom: 0; }
+  td { display: flex; justify-content: space-between; gap: 16px; padding: 4px 0; border: 0; text-align: right; }
+  td::before { content: attr(data-label); color: var(--muted); font-size: 14px; text-align: left; }
+  td.aksi { justify-content: flex-end; gap: 8px; margin-top: 6px; }
+  td.aksi::before { content: none; }
+  td.aksi .link { padding: 12px; }
+  .dua, .detail { grid-template-columns: 1fr; }
+  .form-data { padding: 20px; }
+}

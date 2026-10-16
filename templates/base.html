@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Data Mahasiswa{% endblock %}</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}">Data <em>Mahasiswa</em></a>
+  </header>
+
+  <main class="wrap">
+    {% for pesan in get_flashed_messages() %}
+      <p class="flash" role="status">{{ pesan }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="wrap foot">
+    Data disimpan di database SQLite (mahasiswa.db). Lama studi dihitung otomatis: tahun sekarang dikurangi angkatan.
+  </footer>
+
+  <script>
+    // Minta konfirmasi sebelum menghapus data.
+    document.querySelectorAll(".form-hapus").forEach(function (form) {
+      form.addEventListener("submit", function (e) {
+        if (!confirm("Hapus data " + form.dataset.nama + "? Data yang dihapus tidak bisa dikembalikan.")) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    // Tanda sedang menyimpan, supaya tombol tidak diklik dua kali.
+    document.querySelectorAll("form.form-data").forEach(function (form) {
+      form.addEventListener("submit", function () {
+        var tombol = form.querySelector("button[type=submit]");
+        tombol.disabled = true;
+        tombol.textContent = "Menyimpan...";
+      });
+    });
+    window.addEventListener("pageshow", function () {
+      document.querySelectorAll("form.form-data button[type=submit]").forEach(function (b) {
+        b.disabled = false;
+        b.textContent = "Simpan data";
+      });
+    });
+  </script>
+</body>
+</html>
