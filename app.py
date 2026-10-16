@@ -36,6 +36,11 @@ def lama_studi(angkatan):
     return date.today().year - angkatan
 
 
+def cari_mahasiswa(id):
+    with get_db() as conn:
+        return conn.execute("SELECT * FROM mahasiswa WHERE id = ?", (id,)).fetchone()
+
+
 def validasi(form):
     """Cek isi form. Hasilnya (data_bersih, daftar_pesan_error)."""
     errors = []
@@ -114,6 +119,56 @@ def tambah():
         except sqlite3.IntegrityError:  # kolom nim UNIQUE, jadi NIM kembar ditolak database
             errors.append(f"NIM {data['nim']} sudah terdaftar.")
     return render_template("form.html", mode="tambah", form=request.form, errors=errors), 400
+
+
+# READ: detail satu mahasiswa
+@app.route("/mahasiswa/<int:id>")
+def detail(id):
+    m = cari_mahasiswa(id)
+    if m is None:
+        flash("Data mahasiswa tidak ditemukan.")
+        return redirect(url_for("index"))
+    return render_template("detail.html", m=m, lama_studi=lama_studi(m["angkatan"]), tahun_ini=date.today().year)
+
+
+# UPDATE: ubah data mahasiswa
+@app.route("/mahasiswa/<int:id>/ubah", methods=["GET", "POST"])
+def ubah(id):
+    m = cari_mahasiswa(id)
+    if m is None:
+        flash("Data mahasiswa tidak ditemukan.")
+        return redirect(url_for("index"))
+
+    if request.method == "GET":
+        return render_template("form.html", mode="ubah", form=dict(m), errors=[])
+
+    data, errors = validasi(request.form)
+    if not errors:
+        try:
+            with get_db() as conn:
+                conn.execute(
+                    "UPDATE mahasiswa SET nim = :nim, nama = :nama, program_studi = :program_studi, "
+                    "angkatan = :angkatan, ipk = :ipk WHERE id = :id",
+                    {**data, "id": id},
+                )
+            flash(f"Data {data['nama']} berhasil diperbarui.")
+            return redirect(url_for("detail", id=id))
+        except sqlite3.IntegrityError:
+            errors.append(f"NIM {data['nim']} sudah dipakai mahasiswa lain.")
+    return render_template("form.html", mode="ubah", form=request.form, errors=errors), 400
+
+
+# DELETE: hapus mahasiswa
+@app.route("/mahasiswa/<int:id>/hapus", methods=["POST"])
+def hapus(id):
+    m = cari_mahasiswa(id)
+    if m is None:
+        flash("Data mahasiswa tidak ditemukan.")
+    else:
+        with get_db() as conn:
+            conn.execute("DELETE FROM mahasiswa WHERE id = ?", (id,))
+        flash(f"{m['nama']} sudah dihapus.")
+    return redirect(url_for("index"))
 
 
 init_db()

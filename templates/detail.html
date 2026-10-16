@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ m.nama }} · Data Mahasiswa{% endblock %}
+
+{% block content %}
+<a class="back" href="{{ url_for('index') }}">← Kembali ke daftar</a>
+
+<p class="tag">NIM {{ m.nim }}</p>
+<h1>{{ m.nama }}</h1>
+
+<dl class="artifact detail">
+  <div><dt>Program studi</dt><dd>{{ m.program_studi }}</dd></div>
+  <div><dt>Angkatan</dt><dd>{{ m.angkatan }}</dd></div>
+  <div><dt>IPK</dt><dd>{{ "%.2f"|format(m.ipk) }}</dd></div>
+</dl>
+
+<p class="accent">
+  Lama studi <strong>{{ lama_studi }} tahun</strong>, dihitung dari {{ tahun_ini }} dikurangi angkatan {{ m.angkatan }}.
+</p>
+
+<div class="actions">
+  <a class="btn btn-fill" href="{{ url_for('ubah', id=m.id) }}">Ubah data</a>
+  <form class="form-hapus" method="post" action="{{ url_for('hapus', id=m.id) }}" data-nama="{{ m.nama }}">
+    <button class="btn btn-ghost" type="submit">Hapus mahasiswa</button>
+  </form>
+</div>
+{% endblock %}

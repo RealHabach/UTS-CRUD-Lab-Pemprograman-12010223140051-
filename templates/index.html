@@ -4,7 +4,7 @@
 <section class="hero">
   <div>
     <h1>Daftar <em>mahasiswa</em></h1>
-    <p class="lead">{{ mahasiswa|length }} mahasiswa tercatat.</p>
+    <p class="lead">{{ mahasiswa|length }} mahasiswa tercatat. Klik nama untuk melihat detail.</p>
   </div>
   <a class="btn btn-fill" href="{{ url_for('tambah') }}">Tambah mahasiswa</a>
 </section>
@@ -24,17 +24,24 @@
           <th>Angkatan</th>
           <th>IPK</th>
           <th>Lama studi</th>
+          <th><span class="sr-only">Aksi</span></th>
         </tr>
       </thead>
       <tbody>
         {% for m in mahasiswa %}
         <tr>
           <td data-label="NIM">{{ m.nim }}</td>
-          <td data-label="Nama" class="nama">{{ m.nama }}</td>
+          <td data-label="Nama" class="nama"><a href="{{ url_for('detail', id=m.id) }}">{{ m.nama }}</a></td>
           <td data-label="Program studi">{{ m.program_studi }}</td>
           <td data-label="Angkatan">{{ m.angkatan }}</td>
           <td data-label="IPK">{{ "%.2f"|format(m.ipk) }}</td>
           <td data-label="Lama studi">{{ m.lama_studi }} tahun</td>
+          <td class="aksi">
+            <a class="link" href="{{ url_for('ubah', id=m.id) }}">Ubah</a>
+            <form class="form-hapus" method="post" action="{{ url_for('hapus', id=m.id) }}" data-nama="{{ m.nama }}">
+              <button class="link" type="submit">Hapus</button>
+            </form>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
